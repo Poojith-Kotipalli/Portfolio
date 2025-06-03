@@ -1,83 +1,125 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+// client/src/components/Projects.jsx
 
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+
+// Import your images from src/images:
+import bgLeft from '../images/home.jpg';
+
+
+
+// Sample projects array, each with an imported imgSrc:
 const projects = [
   {
-    title: "Modern Marketing Website",
-    description: "NURA – Marketing Site (2025)",
-    image: "/placeholder-1.jpg", // place real images under client/public/
-    link: "#"
+    title: "Sample Project 1",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sit amet eros nec mauris fermentum.",
+    link: "#",
+    imgAlt: "Project 1 Screenshot",
+    imgSrc: bgLeft,
   },
   {
-    title: "Full-Stack Recruitment Platform",
-    description: "Job Portal Application (2025)",
-    image: "/placeholder-2.jpg",
-    link: "#"
+    title: "Sample Project 2",
+    description:
+      "Pellentesque ac bibendum tortor. Nam vulputate augue id lorem tincidunt, non scelerisque nisi auctor.",
+    link: "#",
+    imgAlt: "Project 2 Screenshot",
+  
   },
   {
-    title: "SAAS Platform",
-    description: "Productivity SAAS Tool (2025)",
-    image: "/placeholder-3.jpg",
-    link: "#"
+    title: "Sample Project 3",
+    description:
+      "Mauris tincidunt justo vitae lacus sagittis, eget commodo ligula fringilla. Vestibulum convallis suscipit.",
+    link: "#",
+    imgAlt: "Project 3 Screenshot",
+   
   },
-  {
-    title: "CineRec (ML Recommendation)",
-    description: "Movie Recommendation Engine (2025)",
-    image: "/placeholder-4.jpg",
-    link: "#"
-  },
-  {
-    title: "Code2Img Tool",
-    description: "Code-to-Image Generator (2025)",
-    image: "/placeholder-5.jpg",
-    link: "#"
-  }
 ];
 
+// Zero-pad index function (e.g. 0 → "01", 1 → "02", etc.)
+function formatIndex(idx) {
+  return String(idx + 1).padStart(2, "0");
+}
+
 export default function Projects() {
+  const rightRef = useRef(null);
+
+  // Track scroll progress within the right column
+  const { scrollYProgress } = useScroll({
+    target: rightRef,
+    offset: ["start end", "end start"],
+  });
+
+  const totalProjects = projects.length;
+  const maxShift = (totalProjects - 1) * 100; // e.g. 3 projects → 200
+
+  // Map scroll progress [0→1] to shift [0→ -maxShift]
+  const yTransform = useTransform(scrollYProgress, [0, 1], [0, -maxShift]);
+
   return (
-    <motion.section
-      id="projects"
-      className="py-16 px-4 bg-gray-50"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true, amount: 0.3 }}
-    >
-      <h2 className="text-3xl font-bold text-center mb-8">Selected Works</h2>
-      <p className="text-center text-gray-600 mb-12">
-        Thoughtfully crafted projects blending utility and aesthetics into functional, memorable experiences.
-      </p>
-      <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((proj, idx) => (
+    <section id="projects" className="relative bg-white">
+      <h2 className="text-3xl font-bold text-center py-8">Projects</h2>
+
+      <div className="flex">
+        {/* ---------------------------------------- */}
+        {/* LEFT COLUMN: pinned 1/4 width, full‐height “number stack” */}
+        <div
+          className="hidden md:block w-1/4 h-screen bg-cover bg-center sticky top-0 overflow-hidden"
+          style={{ backgroundImage: `url(${bgLeft})` }}
+        >
           <motion.div
-            key={idx}
-            className="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 * idx, duration: 0.6 }}
-            viewport={{ once: true }}
+            style={{ y: yTransform }} // numeric → interpreted as vh in CSS
+            transition={{ ease: "easeOut", duration: 0.5 }}
           >
-            <img
-              src={proj.image}
-              alt={`${proj.title} screenshot`}
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold">{proj.title}</h3>
-              <p className="text-sm text-gray-600">{proj.description}</p>
-              <a
-                href={proj.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-2 text-blue-600 hover:underline text-sm"
+            {projects.map((_, idx) => (
+              <div
+                key={idx}
+                className="h-screen flex items-center justify-center"
               >
-                View Project
-              </a>
-            </div>
+                <span className="text-8xl font-extrabold text-gray-300">
+                  {formatIndex(idx)}
+                </span>
+              </div>
+            ))}
           </motion.div>
-        ))}
+        </div>
+
+        {/* ---------------------------------------- */}
+        {/* RIGHT COLUMN: scrollable project cards (each full viewport height) */}
+        <div
+          ref={rightRef}
+          className="w-full md:w-3/4"
+        >
+          {projects.map((proj, idx) => (
+            <motion.div
+              key={proj.title}
+              className="mx-auto w-full md:w-[90%] h-screen my-0 border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow bg-gray-50 flex flex-col"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: false, amount: 0.5 }}
+            >
+              {/* Image at top (occupies about 40% of card height) */}
+              <div className="h-2/5">
+                <img
+                  src={proj.imgSrc}
+                  alt={proj.imgAlt}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Content below (occupies remaining 60%) */}
+              <div className="p-6 flex-1 flex flex-col justify-center">
+                <h3 className="text-2xl font-semibold mb-4">{proj.title}</h3>
+                <p className="text-gray-600 mb-6">{proj.description}</p>
+                <a href={proj.link} className="text-blue-600 hover:underline">
+                  View Project
+                </a>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }

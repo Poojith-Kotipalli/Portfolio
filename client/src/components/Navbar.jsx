@@ -8,45 +8,113 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 w-full bg-white shadow z-20">
       <nav className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-        <a href="#home" className="text-2xl font-bold">Zuned Aalim</a>
+        {/* Sample Brand/Name */}
+        <a href="#home" className="text-2xl font-bold">
+          Sample Name
+        </a>
+
         {/* Desktop Links */}
         <ul className="hidden md:flex space-x-8 text-lg">
-          <li><a href="#services" className="hover:text-blue-600">Services</a></li>
-          <li><a href="#projects" className="hover:text-blue-600">Projects</a></li>
-          <li><a href="#skills" className="hover:text-blue-600">Skills</a></li>
-          <li><a href="#about" className="hover:text-blue-600">About</a></li>
-          <li><a href="#contact" className="hover:text-blue-600">Contact</a></li>
+          <li>
+            <a href="#services" className="hover:text-blue-600">
+              What I Do
+            </a>
+          </li>
+          <li>
+            <a href="#skills" className="hover:text-blue-600">
+              Skills
+            </a>
+          </li>
+          <li>
+            <a href="#projects" className="hover:text-blue-600">
+              Projects
+            </a>
+          </li>
+          <li>
+            <a href="#about" className="hover:text-blue-600">
+              About
+            </a>
+          </li>
+          <li>
+            <a href="#contact" className="hover:text-blue-600">
+              Contact
+            </a>
+          </li>
         </ul>
-        {/* Hamburger (mobile) */}
+
+        {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden flex flex-col space-y-1 focus:outline-none"
           onClick={toggleMenu}
+          className="flex md:hidden"
           aria-label="Toggle menu"
         >
-          <span className="block w-6 h-0.5 bg-black"></span>
-          <span className="block w-6 h-0.5 bg-black"></span>
-          <span className="block w-6 h-0.5 bg-black"></span>
+          {menuOpen ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          )}
         </button>
-      </nav>
-      {/* Mobile Overlay Menu */}
-      {menuOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-90 flex flex-col items-center justify-center space-y-8 text-white text-2xl z-10"
-          onClick={closeMenu}
-        >
-          <a href="#home" onClick={closeMenu}>Home</a>
-          <a href="#services" onClick={closeMenu}>Services</a>
-          <a href="#projects" onClick={closeMenu}>Projects</a>
-          <a href="#skills" onClick={closeMenu}>Skills</a>
-          <a href="#about" onClick={closeMenu}>About</a>
-          <a href="#contact" onClick={closeMenu}>Contact</a>
-          <div className="mt-8 flex space-x-6 text-xl">
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+
+        {/* Mobile Links */}
+        {menuOpen && (
+          <div className="absolute top-full left-0 w-full bg-white shadow-md py-4 flex flex-col items-center space-y-4 md:hidden">
+            <a href="#services" onClick={closeMenu} className="text-lg">
+              What I Do
+            </a>
+            <a href="#skills" onClick={closeMenu} className="text-lg">
+              Skills
+            </a>
+            <a href="#projects" onClick={closeMenu} className="text-lg">
+              Projects
+            </a>
+            <a href="#about" onClick={closeMenu} className="text-lg">
+              About
+            </a>
+            <a href="#contact" onClick={closeMenu} className="text-lg">
+              Contact
+            </a>
+
+            {/* Social Icons as placeholders */}
+            <div className="mt-4 flex space-x-6 text-xl">
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                LinkedIn
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                Instagram
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </nav>
     </header>
   );
 }
