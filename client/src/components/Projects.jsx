@@ -1,7 +1,7 @@
 // src/components/Projects.jsx
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Import your images from src/images (replace with actual project images)
 import projectImage1 from "../images/home.jpg";
@@ -75,6 +75,24 @@ export default function Projects() {
     };
   }, []);
 
+  // Keep previous formatted index to compare digits
+  const [prevFormatted, setPrevFormatted] = useState(formatIndex(0));
+  const formatted = formatIndex(currentIndex);
+
+  useEffect(() => {
+    setPrevFormatted((prev) => {
+      if (prev !== formatted) return prev;
+      return prev;
+    });
+  }, [formatted]);
+
+  // Variants for flipping a single digit
+  const flipIn = {
+    initial: { rotateX: -90, opacity: 0 },
+    animate: { rotateX: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
+    exit: { rotateX: 90, opacity: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  };
+
   return (
     <section
       id="projects"
@@ -99,9 +117,34 @@ export default function Projects() {
             items-center justify-center
           "
         >
-          <h2 className="text-[120px] font-extrabold">
-            {formatIndex(currentIndex)}
-          </h2>
+          <div className="flex space-x-2">
+            {formatted.split("").map((digit, pos) => {
+              const prevDigit = prevFormatted[pos] || "";
+              const key = `${digit}-${pos}`;
+              if (digit !== prevDigit) {
+                return (
+                  <AnimatePresence mode="wait" key={pos}>
+                    <motion.span
+                      key={key}
+                      initial={flipIn.initial}
+                      animate={flipIn.animate}
+                      exit={flipIn.exit}
+                      className="text-[120px] font-extrabold block"
+                    >
+                      {digit}
+                    </motion.span>
+                  </AnimatePresence>
+                );
+              } else {
+                // unchanged digit: render statically without animation
+                return (
+                  <span key={digit + pos} className="text-[120px] font-extrabold block">
+                    {digit}
+                  </span>
+                );
+              }
+            })}
+          </div>
         </div>
 
         {/* RIGHT COLUMN: scrollable project cards (each full viewport height) */}
@@ -119,7 +162,7 @@ export default function Projects() {
               "
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               viewport={{ once: false, amount: 0.5 }}
             >
               {/* Image at top (occupies about 40% of card height) */}

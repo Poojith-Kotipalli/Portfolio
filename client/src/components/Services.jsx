@@ -1,10 +1,9 @@
 // src/components/Services.jsx
 import React, { useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const Services = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const sectionRef = useRef(null);
   const cardRefs = useRef([]);
 
   const services = [
@@ -43,6 +42,7 @@ const Services = () => {
     },
   ];
 
+  // IntersectionObserver logic to highlight the active card
   useEffect(() => {
     const observers = [];
 
@@ -68,7 +68,7 @@ const Services = () => {
     });
 
     return () => {
-      observers.forEach((observer) => observer.disconnect());
+      observers.forEach((obs) => obs.disconnect());
     };
   }, []);
 
@@ -78,16 +78,35 @@ const Services = () => {
     }
   };
 
+  // Check for reduced‐motion preference
+  const prefersReduced = useReducedMotion();
+
+  // Variants for fade‐in/fade‐out
+  const headingVariant = {
+    hidden: { opacity: 0, y: -20, transition: { duration: 0.6, ease: 'easeOut' } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  };
+
+  const cardVariant = {
+    hidden: { opacity: 0, y: 20, transition: { duration: 0.6, ease: 'easeOut' } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  };
+
   return (
     <section
-      ref={sectionRef}
       id="services"
-      className="bg-gradient-to-r from-[#1e053a] to-[#0f0033] text-white min-h-screen"
+      className="bg-gradient-to-r from-[#1b0332] to-[#0b0028] text-white min-h-screen"
     >
       {/* Main heading */}
-      <div className="container mx-auto px-8 pt-20 pb-10">
-        <h2 className="text-8xl md:text-9xl font-bold">WHAT I DO /</h2>
-      </div>
+      <motion.div
+        className="container mx-auto px-8 pt-20 pb-10"
+        variants={headingVariant}
+        initial={prefersReduced ? 'visible' : 'hidden'}
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.3 }}
+      >
+        <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold">WHAT I DO /</h2>
+      </motion.div>
 
       {/* Content area */}
       <div className="container mx-auto px-8">
@@ -98,15 +117,13 @@ const Services = () => {
               {services.map((service, index) => (
                 <h3
                   key={index}
-                  className={`text-2xl font-normal transition-all duration-300 cursor-pointer ${
+                  className={`text-2xl sm:text-3xl font-normal transition-all duration-300 cursor-pointer ${
                     activeIndex === index
                       ? 'text-white'
                       : 'text-gray-400 hover:text-gray-200'
                   }`}
                   onClick={() => {
-                    cardRefs.current[index]?.scrollIntoView({
-                      behavior: 'smooth',
-                    });
+                    cardRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 >
                   {service.title}
@@ -116,37 +133,32 @@ const Services = () => {
           </div>
 
           {/* Right content area */}
-          <div className="w-full md:w-3/4">
+          <div className="w-full md:w-3/4 space-y-20">
             {services.map((service, index) => (
-              <div
+              <motion.div
                 key={index}
                 ref={addToRefs}
                 className="min-h-screen py-20 relative"
+                variants={cardVariant}
+                initial={prefersReduced ? 'visible' : 'hidden'}
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ delay: index * 0.2 }}
               >
                 {/* Large background number */}
-                <div className="absolute top-20 right-0 text-[220px] font-bold text-gray-800 select-none pointer-events-none">
+                <div className="absolute top-20 right-0 text-[180px] font-bold text-gray-800 select-none pointer-events-none">
                   {service.number}
                 </div>
 
                 {/* Content */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{
-                    opacity: activeIndex === index ? 1 : 0,
-                    y: activeIndex === index ? 0 : 30,
-                  }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
-                  className={`relative z-10 ${
-                    activeIndex !== index ? 'pointer-events-none' : ''
-                  }`}
-                >
+                <div className={`relative z-10 ${activeIndex !== index ? 'pointer-events-none' : ''}`}>
                   {/* Mobile title */}
-                  <h3 className="md:hidden text-4xl font-medium mb-8">
+                  <h3 className="md:hidden text-3xl sm:text-4xl font-medium mb-8 text-white">
                     {service.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-xl text-gray-200 leading-relaxed max-w-2xl mb-12">
+                  <p className="text-lg sm:text-xl text-gray-200 leading-relaxed max-w-2xl mb-12">
                     {service.description}
                   </p>
 
@@ -154,15 +166,15 @@ const Services = () => {
                   <div className="space-y-6">
                     {service.points.map((point, pointIndex) => (
                       <div key={pointIndex} className="flex items-start gap-6">
-                        <span className="text-gray-500 text-base font-mono">
+                        <span className="text-gray-500 text-base sm:text-lg font-mono">
                           0{pointIndex + 1}
                         </span>
-                        <span className="text-gray-300 text-lg">{point}</span>
+                        <span className="text-gray-300 text-base sm:text-lg">{point}</span>
                       </div>
                     ))}
                   </div>
-                </motion.div>
-              </div>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
