@@ -1,4 +1,4 @@
-// About.jsx - About Me Section with exact fade/slide animations
+// src/components/About.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -9,23 +9,21 @@ const About = () => {
     "When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community. I believe in continuous learning and staying at the forefront of web development trends to deliver cutting-edge solutions for every project."
   ];
 
-  // Container variants for staggered paragraph animation
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2, // 0.2s delay between paragraphs
-        delayChildren: 0
+        staggerChildren: 0.2,
+        delayChildren: 0.1
       }
     }
   };
 
-  // Individual paragraph variants
   const paragraphVariants = {
     hidden: { 
       opacity: 0, 
-      y: 40 // Start 40px below final position
+      y: 40
     },
     visible: {
       opacity: 1,
@@ -38,17 +36,23 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="py-16 bg-white">
-      <div className="container mx-auto px-4">
-        {/* Centered Headline */}
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">About Me</h2>
+    <section id="about" className="min-h-screen flex items-center bg-white">
+      <div className="container mx-auto px-4 py-20">
+        <motion.h2 
+          className="text-4xl md:text-5xl font-bold text-center mb-16"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          About Me
+        </motion.h2>
         
-        {/* Paragraphs Container */}
         <motion.div
+          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }} // Trigger when 30% visible
-          variants={containerVariants}
+          viewport={{ once: false, amount: 0.3 }}
           className="max-w-4xl mx-auto"
         >
           {paragraphs.map((paragraph, index) => (
