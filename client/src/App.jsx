@@ -10,17 +10,14 @@ import Contact from './components/Contact';
 function App() {
   return (
     <div className="font-sans text-gray-900">
-      {/* Placeholder top-bar to verify Tailwind is loading */}
-      <div className="bg-green-500 text-white p-4 text-center">
-        Tailwind is now working (placeholder)!
-      </div>
+      
 
       <Navbar />
       <Hero />
+      <About />
       <Services />
       <Skills />
       <Projects />
-      <About />
       <Contact />
     </div>
   );

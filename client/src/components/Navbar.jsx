@@ -1,57 +1,100 @@
-import React, { useState } from 'react';
+// src/components/Navbar.jsx
+
+import React, { useState, useEffect } from 'react';
+import { Link, animateScroll as scroll } from 'react-scroll'; 
+// (Optional) react-scroll if you want smooth scroll behavior
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // 1) Listen for scroll to switch background from transparent → solid
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // 2) Toggle hamburger on mobile
   const toggleMenu = () => setMenuOpen(prev => !prev);
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-white shadow z-20">
-      <nav className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-        {/* Sample Brand/Name */}
-        <a href="#home" className="text-2xl font-bold">
-          Sample Name
-        </a>
+    <header
+      className={`fixed w-full top-0 left-0 z-30 transition-colors duration-300 ${
+        scrolled
+          ? 'bg-white shadow-md'    // Solid white + shadow once scrolled
+          : 'bg-transparent'         // Transparent at top
+      }`}
+    >
+      <nav className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* === Brand / Logo === */}
+        <div
+          className="text-2xl font-bold cursor-pointer text-gray-800"
+          onClick={() => {
+            scroll.scrollToTop({ duration: 500, smooth: true });
+            closeMenu();
+          }}
+        >
+          SampleLogo
+        </div>
 
-        {/* Desktop Links */}
-        <ul className="hidden md:flex space-x-8 text-lg">
-          <li>
-            <a href="#services" className="hover:text-blue-600">
-              What I Do
-            </a>
+        {/* === Desktop Links === */}
+        <ul className="hidden md:flex space-x-8 text-gray-700">
+          {/* Using react-scroll’s <Link> for smooth scrolling to each section’s id */}
+          <li className="hover:text-blue-600 cursor-pointer">
+            <Link
+              to="hero"
+              smooth={true}
+              duration={500}
+              offset={-80} // adjust for fixed header height
+            >
+              Home
+            </Link>
           </li>
-          <li>
-            <a href="#skills" className="hover:text-blue-600">
-              Skills
-            </a>
-          </li>
-          <li>
-            <a href="#projects" className="hover:text-blue-600">
-              Projects
-            </a>
-          </li>
-          <li>
-            <a href="#about" className="hover:text-blue-600">
+          <li className="hover:text-blue-600 cursor-pointer">
+            <Link to="about" smooth offset={-80} duration={500}>
               About
-            </a>
+            </Link>
           </li>
-          <li>
-            <a href="#contact" className="hover:text-blue-600">
+          <li className="hover:text-blue-600 cursor-pointer">
+            <Link to="services" smooth offset={-80} duration={500}>
+              What I Do
+            </Link>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <Link to="skills" smooth offset={-80} duration={500}>
+              Skills
+            </Link>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <Link to="projects" smooth offset={-80} duration={500}>
+              Projects
+            </Link>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <Link to="contact" smooth offset={-80} duration={500}>
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
 
-        {/* Mobile Menu Toggle */}
+        {/* === Mobile Hamburger === */}
         <button
           onClick={toggleMenu}
-          className="flex md:hidden"
-          aria-label="Toggle menu"
+          className="md:hidden flex items-center justify-center p-2 focus:outline-none"
+          aria-label="Toggle Menu"
         >
           {menuOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
+              className="h-6 w-6 text-gray-800"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -66,7 +109,7 @@ export default function Navbar() {
           ) : (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
+              className="h-6 w-6 text-gray-800"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -81,37 +124,44 @@ export default function Navbar() {
           )}
         </button>
 
-        {/* Mobile Links */}
+        {/* === Mobile Menu Drawer === */}
         {menuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white shadow-md py-4 flex flex-col items-center space-y-4 md:hidden">
-            <a href="#services" onClick={closeMenu} className="text-lg">
-              What I Do
-            </a>
-            <a href="#skills" onClick={closeMenu} className="text-lg">
-              Skills
-            </a>
-            <a href="#projects" onClick={closeMenu} className="text-lg">
-              Projects
-            </a>
-            <a href="#about" onClick={closeMenu} className="text-lg">
-              About
-            </a>
-            <a href="#contact" onClick={closeMenu} className="text-lg">
-              Contact
-            </a>
-
-            {/* Social Icons as placeholders */}
-            <div className="mt-4 flex space-x-6 text-xl">
-              <a href="#" target="_blank" rel="noopener noreferrer">
-                LinkedIn
-              </a>
-              <a href="#" target="_blank" rel="noopener noreferrer">
-                Instagram
-              </a>
-              <a href="#" target="_blank" rel="noopener noreferrer">
-                GitHub
-              </a>
-            </div>
+          <div
+            className="absolute top-full left-0 w-full bg-white shadow-md"
+            onClick={closeMenu}
+          >
+            <ul className="flex flex-col items-center space-y-4 py-6 text-gray-700">
+              <li className="hover:text-blue-600">
+                <Link to="home" smooth offset={-80} duration={500}>
+                  Home
+                </Link>
+              </li>
+              <li className="hover:text-blue-600">
+                <Link to="services" smooth offset={-80} duration={500}>
+                  What I Do
+                </Link>
+              </li>
+              <li className="hover:text-blue-600">
+                <Link to="skills" smooth offset={-80} duration={500}>
+                  Skills
+                </Link>
+              </li>
+              <li className="hover:text-blue-600">
+                <Link to="projects" smooth offset={-80} duration={500}>
+                  Projects
+                </Link>
+              </li>
+              <li className="hover:text-blue-600">
+                <Link to="about" smooth offset={-80} duration={500}>
+                  About
+                </Link>
+              </li>
+              <li className="hover:text-blue-600">
+                <Link to="contact" smooth offset={-80} duration={500}>
+                  Contact
+                </Link>
+              </li>
+            </ul>
           </div>
         )}
       </nav>
