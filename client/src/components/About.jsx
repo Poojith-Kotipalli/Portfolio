@@ -1,6 +1,6 @@
 // src/components/About.jsx
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
 const About = () => {
   const paragraphs = [
@@ -9,62 +9,65 @@ const About = () => {
     "When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community. I believe in continuous learning and staying at the forefront of web development trends to deliver cutting-edge solutions for every project."
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const paragraphVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 40
-    },
+  // Variants for heading
+  const headingVariant = {
+    hidden: { opacity: 0, y: -30 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut"
-      }
-    }
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  };
+
+  // Variants for each paragraph
+  const paragraphVariant = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
   };
 
   return (
-    <section id="about" className="min-h-screen flex items-center bg-white">
-      <div className="container mx-auto px-4 py-20">
-        <motion.h2 
-          className="text-4xl md:text-5xl font-bold text-center mb-16"
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+    <section
+      id="about"
+      className="
+        min-h-screen
+        flex flex-col items-center
+        bg-gradient-to-r from-[#1e053a] to-[#0f0033]
+        text-white text-justify
+        py-20
+      "
+    >
+      <div className="container mx-auto px-8">
+        {/* Heading: fade in/out based on scroll */}
+        <motion.h2
+          className="text-6xl md:text-7xl font-bold text-center mb-16"
+          variants={headingVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.9 }}
         >
           About Me
         </motion.h2>
-        
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          className="max-w-4xl mx-auto"
-        >
+
+        {/* Paragraphs: fade in top→bottom on scroll down, and fade out bottom→top on scroll up */}
+        <div className="max-w-4xl mx-auto space-y-12">
           {paragraphs.map((paragraph, index) => (
             <motion.p
               key={index}
-              variants={paragraphVariants}
-              className="text-lg text-gray-700 leading-relaxed mb-6 last:mb-0"
+              className="text-xl leading-relaxed"
+              variants={paragraphVariant}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.9 }}
+              transition={{ delay: index * 0.1 }}
             >
               {paragraph}
             </motion.p>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

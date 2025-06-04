@@ -1,12 +1,14 @@
-// client/src/components/Projects.jsx
+// src/components/Projects.jsx
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-// Import your images from src/images:
-import bgLeft from "../images/home.jpg";
+// Import your images from src/images (replace with actual project images)
+import projectImage1 from "../images/home.jpg";
+import projectImage2 from "../images/home.jpg";
+import projectImage3 from "../images/home.jpg";
 
-// Sample projects array—replace with your actual project data:
+// Sample projects array—replace imgSrc with each project’s actual image
 const projects = [
   {
     title: "Sample Project 1",
@@ -14,7 +16,7 @@ const projects = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sit amet eros nec mauris fermentum.",
     link: "#",
     imgAlt: "Project 1 Screenshot",
-    imgSrc: bgLeft,
+    imgSrc: projectImage1,
   },
   {
     title: "Sample Project 2",
@@ -22,7 +24,7 @@ const projects = [
       "Pellentesque ac bibendum tortor. Nam vulputate augue id lorem tincidunt, non scelerisque nisi auctor.",
     link: "#",
     imgAlt: "Project 2 Screenshot",
-    imgSrc: bgLeft,
+    imgSrc: projectImage2,
   },
   {
     title: "Sample Project 3",
@@ -30,7 +32,7 @@ const projects = [
       "Mauris tincidunt justo vitae lacus sagittis, eget commodo ligula fringilla. Vestibulum convallis suscipit.",
     link: "#",
     imgAlt: "Project 3 Screenshot",
-    imgSrc: bgLeft,
+    imgSrc: projectImage3,
   },
   // …add more projects as needed
 ];
@@ -74,22 +76,34 @@ export default function Projects() {
   }, []);
 
   return (
-    <section id="projects" className="relative bg-white">
-      <h2 className="text-3xl font-bold text-center py-8">Projects</h2>
+    <section
+      id="projects"
+      className="
+        min-h-screen
+        bg-gradient-to-r from-[#1e053a] to-[#0f0033]
+        text-white text-lg text-justify
+        py-20
+      "
+    >
+      <h2 className="text-5xl md:text-6xl font-bold text-center mb-12">
+        Projects
+      </h2>
 
       <div className="flex">
-        {/* ---------------------------------------- */}
         {/* LEFT COLUMN: sticky 1/4 width showing current index */}
         <div
-          className="hidden md:flex w-1/4 h-screen bg-cover bg-center sticky top-0 items-center justify-center"
-          style={{ backgroundImage: `url(${bgLeft})` }}
+          className="
+            hidden md:flex
+            w-1/4 h-screen
+            sticky top-0
+            items-center justify-center
+          "
         >
-          <h2 className="text-8xl font-extrabold text-gray-300">
+          <h2 className="text-[120px] font-extrabold">
             {formatIndex(currentIndex)}
           </h2>
         </div>
 
-        {/* ---------------------------------------- */}
         {/* RIGHT COLUMN: scrollable project cards (each full viewport height) */}
         <div className="w-full md:w-3/4">
           {projects.map((proj, idx) => (
@@ -97,14 +111,19 @@ export default function Projects() {
               key={proj.title}
               data-index={idx}
               ref={(el) => (projectRefs.current[idx] = el)}
-              className="mx-auto w-full md:w-[90%] h-screen my-8 bg-gray-50 flex flex-col rounded-lg shadow-sm overflow-hidden"
+              className="
+                mx-auto w-full md:w-[90%] h-screen my-8
+                bg-[#3a0f5b]/50 border border-white/20
+                rounded-lg overflow-hidden shadow-lg
+                flex flex-col
+              "
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: false, amount: 0.5 }}
             >
               {/* Image at top (occupies about 40% of card height) */}
-              <div className="h-2/5">
+              <div className="h-2/5 w-full">
                 <img
                   src={proj.imgSrc}
                   alt={proj.imgAlt}
@@ -113,18 +132,20 @@ export default function Projects() {
               </div>
 
               {/* Content below (occupies remaining 60%) */}
-              <div className="p-6 flex-1 flex flex-col justify-center">
-                <h3 className="text-2xl font-semibold mb-4">
+              <div className="p-8 flex-1 flex flex-col justify-center">
+                <h3 className="text-3xl md:text-4xl font-semibold mb-6">
                   {proj.title}
                 </h3>
-                <p className="text-gray-600 mb-6">{proj.description}</p>
+                <p className="text-gray-200 mb-8 leading-relaxed">
+                  {proj.description}
+                </p>
                 <a
                   href={proj.link}
-                  className="text-blue-600 hover:underline"
+                  className="text-[#a1eafb] text-xl hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  View Project
+                  View Project →
                 </a>
               </div>
             </motion.div>

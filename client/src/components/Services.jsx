@@ -1,4 +1,4 @@
-// Services.jsx - Carbon copy of the reference design
+// src/components/Services.jsx
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
@@ -6,43 +6,46 @@ const Services = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef(null);
   const cardRefs = useRef([]);
-  
+
   const services = [
     {
       number: "(01)",
       title: "Full-Stack Development",
-      description: "From frontend interactions to backend APIs, I build complete web solutions. I work with modern stacks to deliver apps that are scalable, maintainable, and ready for real-world users.",
+      description:
+        "From frontend interactions to backend APIs, I build complete web solutions. I work with modern stacks to deliver apps that are scalable, maintainable, and ready for real-world users.",
       points: [
         "React, Node.js, Express.js",
         "REST APIs, Firebase, Docker",
-        "Git, GitHub, Postman"
-      ]
+        "Git, GitHub, Postman",
+      ],
     },
     {
       number: "(02)",
       title: "UI/UX & Frontend",
-      description: "Design is more than looks — it's about clarity and connection. I design and develop clean, responsive interfaces that feel intuitive across devices. My focus is on clarity, accessibility, and seamless user experiences.",
+      description:
+        "Design is more than looks — it's about clarity and connection. I design and develop clean, responsive interfaces that feel intuitive across devices. My focus is on clarity, accessibility, and seamless user experiences.",
       points: [
         "Next.js, TailwindCSS, GSAP",
         "Figma to Code",
-        "HTML, CSS, JavaScript"
-      ]
+        "HTML, CSS, JavaScript",
+      ],
     },
     {
       number: "(03)",
       title: "Optimization",
-      description: "Beyond handling data, I'm driven by the challenge of turning complex raw inputs into reliable, usable systems. I enjoy designing pipelines that power insights and apply core CS principles to build for scale, speed, and stability.",
+      description:
+        "Beyond handling data, I'm driven by the challenge of turning complex raw inputs into reliable, usable systems. I enjoy designing pipelines that power insights and apply core CS principles to build for scale, speed, and stability.",
       points: [
         "Data Structures & Algorithms",
         "DBMS, OOP, OS Fundamentals",
-        "Data Pipelines, ETL, and Scalability"
-      ]
-    }
+        "Data Pipelines, ETL, and Scalability",
+      ],
+    },
   ];
 
   useEffect(() => {
     const observers = [];
-    
+
     cardRefs.current.forEach((card, index) => {
       if (card) {
         const observer = new IntersectionObserver(
@@ -53,19 +56,19 @@ const Services = () => {
               }
             });
           },
-          { 
+          {
             threshold: [0.6],
-            rootMargin: '0px'
+            rootMargin: '0px',
           }
         );
-        
+
         observer.observe(card);
         observers.push(observer);
       }
     });
 
     return () => {
-      observers.forEach(observer => observer.disconnect());
+      observers.forEach((observer) => observer.disconnect());
     };
   }, []);
 
@@ -76,12 +79,16 @@ const Services = () => {
   };
 
   return (
-    <section ref={sectionRef} id="services" className="bg-black text-white min-h-screen">
+    <section
+      ref={sectionRef}
+      id="services"
+      className="bg-gradient-to-r from-[#1e053a] to-[#0f0033] text-white min-h-screen"
+    >
       {/* Main heading */}
       <div className="container mx-auto px-8 pt-20 pb-10">
-        <h2 className="text-7xl md:text-8xl font-bold">WHAT I DO /</h2>
+        <h2 className="text-8xl md:text-9xl font-bold">WHAT I DO /</h2>
       </div>
-      
+
       {/* Content area */}
       <div className="container mx-auto px-8">
         <div className="flex gap-16">
@@ -91,13 +98,15 @@ const Services = () => {
               {services.map((service, index) => (
                 <h3
                   key={index}
-                  className={`text-xl font-normal transition-all duration-300 cursor-pointer ${
-                    activeIndex === index 
-                      ? 'text-white' 
-                      : 'text-gray-600 hover:text-gray-400'
+                  className={`text-2xl font-normal transition-all duration-300 cursor-pointer ${
+                    activeIndex === index
+                      ? 'text-white'
+                      : 'text-gray-400 hover:text-gray-200'
                   }`}
                   onClick={() => {
-                    cardRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
+                    cardRefs.current[index]?.scrollIntoView({
+                      behavior: 'smooth',
+                    });
                   }}
                 >
                   {service.title}
@@ -115,7 +124,7 @@ const Services = () => {
                 className="min-h-screen py-20 relative"
               >
                 {/* Large background number */}
-                <div className="absolute top-20 right-0 text-[200px] font-bold text-gray-900 select-none pointer-events-none">
+                <div className="absolute top-20 right-0 text-[220px] font-bold text-gray-800 select-none pointer-events-none">
                   {service.number}
                 </div>
 
@@ -124,27 +133,31 @@ const Services = () => {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{
                     opacity: activeIndex === index ? 1 : 0,
-                    y: activeIndex === index ? 0 : 30
+                    y: activeIndex === index ? 0 : 30,
                   }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className={`relative z-10 ${activeIndex !== index ? 'pointer-events-none' : ''}`}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  className={`relative z-10 ${
+                    activeIndex !== index ? 'pointer-events-none' : ''
+                  }`}
                 >
                   {/* Mobile title */}
-                  <h3 className="md:hidden text-3xl font-medium mb-8">
+                  <h3 className="md:hidden text-4xl font-medium mb-8">
                     {service.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-lg text-gray-400 leading-relaxed max-w-2xl mb-12">
+                  <p className="text-xl text-gray-200 leading-relaxed max-w-2xl mb-12">
                     {service.description}
                   </p>
-                  
+
                   {/* Service points */}
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {service.points.map((point, pointIndex) => (
                       <div key={pointIndex} className="flex items-start gap-6">
-                        <span className="text-gray-600 text-sm font-mono">0{pointIndex + 1}</span>
-                        <span className="text-gray-300">{point}</span>
+                        <span className="text-gray-500 text-base font-mono">
+                          0{pointIndex + 1}
+                        </span>
+                        <span className="text-gray-300 text-lg">{point}</span>
                       </div>
                     ))}
                   </div>
