@@ -1,30 +1,69 @@
+// About.jsx - About Me Section with exact fade/slide animations
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export default function About() {
+const About = () => {
+  const paragraphs = [
+    "I'm a passionate full-stack developer with a deep love for creating elegant solutions to complex problems. My journey in technology began with a curiosity about how things work, which quickly evolved into a career dedicated to building meaningful digital experiences.",
+    "With expertise spanning from front-end interfaces to back-end architectures, I specialize in crafting scalable web applications that not only meet technical requirements but also deliver exceptional user experiences. My approach combines clean code principles with creative problem-solving to build products that make a difference.",
+    "When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community. I believe in continuous learning and staying at the forefront of web development trends to deliver cutting-edge solutions for every project."
+  ];
+
+  // Container variants for staggered paragraph animation
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2, // 0.2s delay between paragraphs
+        delayChildren: 0
+      }
+    }
+  };
+
+  // Individual paragraph variants
+  const paragraphVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 40 // Start 40px below final position
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <motion.section
-      id="about"
-      className="py-16 px-4 bg-white"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: false, amount: 0.3 }}
-    >
-      <h2 className="text-3xl font-bold text-center mb-8">About Me</h2>
-      <div className="max-w-3xl mx-auto text-gray-700 space-y-6 leading-relaxed">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula, purus at blandit commodo, lectus dolor sollicitudin nunc,
-          vitae lacinia lacus urna id mauris.
-        </p>
-        <p>
-          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas aliquam mollis mauris, ut accumsan orci.
-        </p>
-        <p>
-          Phasellus at leo nec nisi vulputate tincidunt in at ipsum. Sed commodo, nisl id luctus molestie, ex nulla ullamcorper eros,
-          a feugiat erat arcu nec eros.
-        </p>
+    <section id="about" className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        {/* Centered Headline */}
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">About Me</h2>
+        
+        {/* Paragraphs Container */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }} // Trigger when 30% visible
+          variants={containerVariants}
+          className="max-w-4xl mx-auto"
+        >
+          {paragraphs.map((paragraph, index) => (
+            <motion.p
+              key={index}
+              variants={paragraphVariants}
+              className="text-lg text-gray-700 leading-relaxed mb-6 last:mb-0"
+            >
+              {paragraph}
+            </motion.p>
+          ))}
+        </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
-}
+};
+
+export default About;
