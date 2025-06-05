@@ -14,8 +14,8 @@ const Navbar = () => {
       `}
     >
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo/Text */}
-        <div className="text-white font-bold text-lg">MyLogo</div>
+        
+        <div className="text-white font-bold text-lg">PK</div>
 
         <ul className="flex space-x-6">
           {["home", "about", "services", "skills", "projects", "contact"].map(

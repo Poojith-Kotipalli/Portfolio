@@ -5,36 +5,58 @@ import { motion } from 'framer-motion';
 const Skills = () => {
   const skillCategories = [
     {
-      title: "Languages",
+      title: "Programming Languages & Frameworks",
       items: [
+        "Python (Flask, Pandas, NumPy, PySpark, SciPy, scikit-learn)",
         "JavaScript / TypeScript",
-        "Python",
-        "Java",
-        "HTML5 / CSS3",
-        "SQL",
-        "GraphQL"
+        "Java, SQL (MySQL, PostgreSQL)",
+        "HTML / CSS",
+        "MIDI Scripting"
       ]
     },
     {
-      title: "Frameworks & Tools",
+      title: "Data Engineering & Cloud",
       items: [
-        "React / Next.js",
-        "Node.js / Express",
-        "Vue.js",
-        "MongoDB / PostgreSQL",
-        "Docker / Kubernetes",
-        "AWS / Google Cloud"
+        "Apache Kafka, PySpark",
+        "Apache Airflow, GCP Dataflow",
+        "AWS (S3, Redshift, EMR), Snowflake",
+        "ETL / ELT Pipelines",
+        "CI/CD (GitHub Actions, Jenkins)"
       ]
     },
     {
-      title: "Core Concepts",
+      title: "Machine Learning & AI",
       items: [
-        "RESTful APIs",
-        "Microservices",
-        "CI/CD",
-        "Test-Driven Development",
-        "Agile / Scrum",
-        "System Design"
+        "Scikit-learn, TensorFlow, Keras, PyTorch",
+        "Deep Learning (CNN, YOLO NAS)",
+        "Natural Language Processing (BERT, spaCy)",
+        "Regression, Classification, Random Forest"
+      ]
+    },
+    {
+      title: "Visualization & Databases",
+      items: [
+        "Tableau, Power BI, Looker Studio",
+        "SQL Query Optimization",
+        "Database Design (ACID, Crow’s Foot Notation)",
+        "MongoDB, Redshift, Snowflake"
+      ]
+    },
+    {
+      title: "Development & DevOps",
+      items: [
+        "REST APIs, Git, GitHub, Postman",
+        "Full-Stack Web Development",
+        "System Design, Agile, TDD",
+        "Realtime Dashboards, Alerting Systems"
+      ]
+    },
+    {
+      title: "Other Tools & Soft Skills",
+      items: [
+        "Linux, VSCode, Figma",
+        "Communication, Team Collaboration",
+        "Problem Solving, Fast Learning"
       ]
     }
   ];
@@ -51,17 +73,11 @@ const Skills = () => {
   };
 
   const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 20 
-    },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
+      transition: { duration: 0.5, ease: "easeOut" }
     }
   };
 
@@ -85,7 +101,7 @@ const Skills = () => {
         >
           Skills
         </motion.h2>
-        
+
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-6xl mx-auto"
           initial="hidden"

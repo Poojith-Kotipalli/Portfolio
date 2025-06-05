@@ -3,11 +3,9 @@ import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const Contact = () => {
-  // Create a ref and track whether the container is in view
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { amount: 0.6, once: false });
 
-  // Variants for individual elements
   const headingVariant = {
     hidden: { x: -100, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: 'easeOut' } },
@@ -42,7 +40,6 @@ const Contact = () => {
       ref={containerRef}
     >
       <div className="container mx-auto px-8 text-center">
-        {/* Heading: animates based on isInView */}
         <motion.h2
           className="text-6xl md:text-7xl font-bold mb-8"
           variants={headingVariant}
@@ -52,7 +49,6 @@ const Contact = () => {
           Get In Touch
         </motion.h2>
 
-        {/* Paragraph: animates based on isInView */}
         <motion.p
           className="text-xl text-gray-200 mb-12 max-w-2xl mx-auto leading-relaxed"
           variants={paragraphVariant}
@@ -64,14 +60,13 @@ const Contact = () => {
           out!
         </motion.p>
 
-        {/* Button: animates based on isInView */}
         <motion.div
           variants={buttonVariant}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
           <a
-            href="mailto:hello@example.com"
+            href="https://outlook.office.com/mail/deeplink/compose?to=kotipalli.ven@northeastern.edu"
             className="
               inline-block
               bg-white text-[#1e053a]
@@ -79,15 +74,16 @@ const Contact = () => {
               rounded-full font-medium
               hover:bg-gray-200 transition-colors
             "
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Say Hello
           </a>
         </motion.div>
 
-        {/* Social Icons: animate based on isInView */}
         <div className="flex justify-center gap-8 mt-16">
           <motion.a
-            href="#"
+            href="https://www.linkedin.com/in/poojith-kotipalli"
             className="text-gray-300 hover:text-white text-xl transition-colors"
             variants={iconVariant}
             initial="hidden"
@@ -97,8 +93,9 @@ const Contact = () => {
           >
             LinkedIn
           </motion.a>
+
           <motion.a
-            href="#"
+            href="https://github.com/Poojith-Kotipalli"
             className="text-gray-300 hover:text-white text-xl transition-colors"
             variants={iconVariant}
             initial="hidden"
@@ -107,17 +104,6 @@ const Contact = () => {
             rel="noopener noreferrer"
           >
             GitHub
-          </motion.a>
-          <motion.a
-            href="#"
-            className="text-gray-300 hover:text-white text-xl transition-colors"
-            variants={iconVariant}
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Twitter
           </motion.a>
         </div>
       </div>
